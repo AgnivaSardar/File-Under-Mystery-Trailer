@@ -125,6 +125,15 @@ export default function PrologueScreen() {
       {mode === "start" ? (
         /* INITIAL START SCREEN */
         <div className="my-auto w-full max-w-md p-4 sm:p-6 relative z-10 flex flex-col items-center text-center gap-5 sm:gap-6 animate-rise-up">
+          {/* VIT Mathematics Club Official Logo */}
+          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-black/70 border border-white/20 p-2.5 shadow-2xl backdrop-blur-md flex items-center justify-center">
+            <img
+              src="/maths_club_logo.png"
+              alt="VIT Mathematics Club"
+              className="w-full h-full object-contain drop-shadow"
+            />
+          </div>
+
           <div>
             <h1 className="text-xl sm:text-3xl font-extrabold tracking-wider text-white">
               FILE UNDER MYSTERY
@@ -207,7 +216,7 @@ export default function PrologueScreen() {
             </div>
           </div>
 
-          {/* BOTTOM CONTROLS (BALANCED RESPONSIVE FLEX WITH PB-4) */}
+          {/* BOTTOM CONTROLS */}
           <div className="w-full flex items-center justify-between gap-2 border-t border-white/10 pt-3 pb-4 font-mono text-xs shrink-0">
             <div className="flex items-center gap-1.5 sm:gap-2.5">
               <button
