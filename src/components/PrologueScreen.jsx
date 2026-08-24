@@ -123,16 +123,14 @@ export default function PrologueScreen() {
       </div>
 
       {mode === "start" ? (
-        /* INITIAL START SCREEN */
+        /* INITIAL START SCREEN (PURE LOGO WITHOUT CARD) */
         <div className="my-auto w-full max-w-md p-4 sm:p-6 relative z-10 flex flex-col items-center text-center gap-5 sm:gap-6 animate-rise-up">
-          {/* VIT Mathematics Club Official Logo */}
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-black/70 border border-white/20 p-2.5 shadow-2xl backdrop-blur-md flex items-center justify-center">
-            <img
-              src="/maths_club_logo.png"
-              alt="VIT Mathematics Club"
-              className="w-full h-full object-contain drop-shadow"
-            />
-          </div>
+          {/* VIT Mathematics Club Pure Logo */}
+          <img
+            src="/maths_club_logo.png"
+            alt="VIT Mathematics Club"
+            className="w-28 h-28 sm:w-36 sm:h-36 object-contain drop-shadow-[0_4px_20px_rgba(0,0,0,0.8)] filter brightness-105 select-none pointer-events-none"
+          />
 
           <div>
             <h1 className="text-xl sm:text-3xl font-extrabold tracking-wider text-white">
