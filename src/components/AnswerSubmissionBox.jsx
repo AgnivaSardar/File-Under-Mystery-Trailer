@@ -72,7 +72,7 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
           </button>
         </div>
       ) : (
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-3">
           <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
             <div className="relative flex-1">
               <input
@@ -94,16 +94,18 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
             </button>
           </form>
 
-          {/* Under Submit: Skip Level Button */}
-          <div className="flex items-center justify-between pt-2 border-t border-white/10">
-            <span className="text-[10px] text-slate-500 font-mono">Want to test the next anomaly?</span>
+          {/* Under Submit: Clean, Non-wrapping Full/Flex Skip Level Button */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2 pt-2.5 border-t border-white/10">
+            <span className="text-[11px] text-slate-400 font-mono text-center sm:text-left">
+              Want to skip ahead in this trailer?
+            </span>
             <button
               type="button"
               onClick={handleSkip}
-              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-[11px] font-mono cursor-pointer"
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white transition-all flex items-center justify-center gap-2 text-xs font-mono cursor-pointer whitespace-nowrap shrink-0 shadow"
             >
-              <FastForward size={12} className="text-cyan-400" />
-              <span>Skip Level &rarr;</span>
+              <FastForward size={13} className="text-cyan-400" />
+              <span className="whitespace-nowrap">Skip Level &rarr;</span>
             </button>
           </div>
         </div>
