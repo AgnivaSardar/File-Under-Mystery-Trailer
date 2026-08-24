@@ -8,6 +8,7 @@ import { gamma } from "../filters/gamma.js";
 export default function ImageCanvas({ config }) {
   const canvasRef = useRef(null);
   const originalRef = useRef(null);
+  const containerRef = useRef(null);
 
   // Filter states
   const [minStretch, setMinStretch] = useState(0);
@@ -120,19 +121,17 @@ export default function ImageCanvas({ config }) {
 
   const handleMouseUp = () => setIsDragging(false);
 
-  // Multi-Touch Pinch-to-Zoom & Pan Handlers
+  // Multi-Touch Pinch-to-Zoom & Pan Handlers (Prevents whole-page scrolling when zoomed)
   const getTouchDist = (t1, t2) => {
     return Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
   };
 
   const handleTouchStart = (e) => {
     if (e.touches.length === 2) {
-      // 2-finger Pinch gesture start
       setIsDragging(false);
       initialPinchDist.current = getTouchDist(e.touches[0], e.touches[1]);
       initialPinchZoom.current = zoom;
     } else if (e.touches.length === 1 && zoom > 1) {
-      // 1-finger Pan gesture start
       setIsDragging(true);
       dragStart.current = { x: e.touches[0].clientX - pan.x, y: e.touches[0].clientY - pan.y };
     }
@@ -140,14 +139,14 @@ export default function ImageCanvas({ config }) {
 
   const handleTouchMove = (e) => {
     if (e.touches.length === 2 && initialPinchDist.current) {
-      // 2-finger Pinching
+      if (e.cancelable) e.preventDefault();
       const currentDist = getTouchDist(e.touches[0], e.touches[1]);
       const scaleRatio = currentDist / initialPinchDist.current;
       const nextZoom = Math.max(1, Math.min(4.0, initialPinchZoom.current * scaleRatio));
       setZoom(nextZoom);
       if (nextZoom === 1) setPan({ x: 0, y: 0 });
     } else if (e.touches.length === 1 && isDragging && zoom > 1) {
-      // 1-finger Panning
+      if (e.cancelable) e.preventDefault();
       setPan({
         x: e.touches[0].clientX - dragStart.current.x,
         y: e.touches[0].clientY - dragStart.current.y
@@ -163,6 +162,23 @@ export default function ImageCanvas({ config }) {
       setIsDragging(false);
     }
   };
+
+  // Attach non-passive touch listener to guarantee page scroll prevention when zoomed
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const preventScrollWhenZoomed = (e) => {
+      if (zoom > 1) {
+        if (e.cancelable) e.preventDefault();
+      }
+    };
+
+    el.addEventListener("touchmove", preventScrollWhenZoomed, { passive: false });
+    return () => {
+      el.removeEventListener("touchmove", preventScrollWhenZoomed);
+    };
+  }, [zoom]);
 
   const handleZoomChange = (delta) => {
     setZoom((prev) => {
@@ -190,8 +206,9 @@ export default function ImageCanvas({ config }) {
       onContextMenu={(e) => e.preventDefault()}
       className="flex flex-col gap-3 w-full select-none max-w-5xl mx-auto"
     >
-      {/* Centered Evidence Canvas Viewport with Pinch-to-Zoom & Drag-to-Pan */}
+      {/* Centered Evidence Canvas Viewport with Touch Pan/Pinch (Blocks outer page scrolling when zoomed) */}
       <div
+        ref={containerRef}
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -200,7 +217,10 @@ export default function ImageCanvas({ config }) {
         onTouchMove={handleTouchMove}
         onTouchEnd={handleTouchEnd}
         className="relative rounded-2xl overflow-hidden border border-white/15 flex flex-col items-center justify-center p-2 sm:p-3 bg-black shadow-2xl h-[260px] sm:h-[360px] md:h-[420px] w-full select-none"
-        style={{ cursor: zoom > 1 ? (isDragging ? "grabbing" : "grab") : "default" }}
+        style={{
+          touchAction: zoom > 1 ? "none" : "pan-y",
+          cursor: zoom > 1 ? (isDragging ? "grabbing" : "grab") : "default"
+        }}
       >
         {/* Floating Controls in Canvas Top Right */}
         <div className="absolute top-2 right-2 sm:top-3 sm:right-3 z-20 flex items-center gap-1.5 bg-black/85 backdrop-blur-md border border-white/20 px-2.5 py-1 rounded-xl text-xs font-mono text-slate-300 shadow-xl">
