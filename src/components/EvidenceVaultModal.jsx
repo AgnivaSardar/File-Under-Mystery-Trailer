@@ -7,18 +7,26 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
   const { isLevelSolved } = useGameStore();
 
   return (
-    <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
-      <div className="bg-black border border-white/20 rounded-2xl max-w-2xl w-full p-4 sm:p-6 font-mono text-xs shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
-          <div className="flex items-center gap-2 text-white font-bold text-xs sm:text-sm">
-            <Briefcase size={16} />
-            <span>CASE EVIDENCE VAULT // ACTIVE DOSSIER</span>
+    <div 
+      className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4"
+      onClick={onClose}
+    >
+      <div 
+        className="bg-black border border-white/20 rounded-2xl max-w-2xl w-full p-4 sm:p-6 font-mono text-xs shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto relative z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0 gap-3">
+          <div className="flex items-center gap-2 text-white font-bold text-xs sm:text-sm min-w-0 flex-1">
+            <Briefcase size={16} className="shrink-0 text-cyan-400" />
+            <span className="truncate">EVIDENCE VAULT // ACTIVE DOSSIER</span>
           </div>
+
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 cursor-pointer"
+            aria-label="Close modal"
+            className="p-2 rounded-xl bg-white/10 hover:bg-white/25 active:bg-white/30 text-white border border-white/20 transition-all cursor-pointer shrink-0 flex items-center justify-center shadow-md touch-manipulation"
           >
-            <X size={18} />
+            <X size={18} className="text-white" />
           </button>
         </div>
 
