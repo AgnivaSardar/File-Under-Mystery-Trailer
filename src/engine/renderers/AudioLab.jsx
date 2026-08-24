@@ -9,14 +9,14 @@ export default function AudioLab({ config }) {
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(20.25);
+  const [duration, setDuration] = useState(26.0);
   const [playbackRate, setPlaybackRate] = useState(1);
 
-  // Audio DSP Filter States (Default: Low-Pass at 800 Hz -> Voice Only)
-  const [filterType, setFilterType] = useState("lowpass"); // 'lowpass' | 'bandpass' | 'highpass' | 'bypass'
-  const [frequency, setFrequency] = useState(800); // 800 Hz default
+  // Audio DSP Filter States
+  const [filterType, setFilterType] = useState("lowpass");
+  const [frequency, setFrequency] = useState(800);
 
-  const audioSrc = config.evidenceFile || "/evidence/voicemail.wav";
+  const audioSrc = config.evidenceFile || "/evidence/trailer_beacon.wav";
 
   // Initialize Web Audio DSP Graph
   useEffect(() => {
@@ -112,16 +112,16 @@ export default function AudioLab({ config }) {
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      className="flex flex-col gap-3.5 w-full select-none font-mono text-xs max-w-5xl mx-auto"
+      className="flex flex-col gap-3 w-full select-none font-mono text-xs max-w-5xl mx-auto"
     >
       {/* Sleek, Unified Forensic Audio Console */}
-      <div className="bg-black p-4 rounded-2xl border border-white/15 w-full flex flex-col gap-3">
-        {/* Row 1: Play/Pause, Timeline Scrubber & Speed Controls */}
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex items-center gap-2">
+      <div className="bg-black p-3 sm:p-4 rounded-2xl border border-white/15 w-full flex flex-col gap-3 shadow-2xl">
+        {/* Row 1: Play/Pause, Scrubber & Speeds */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+          <div className="flex items-center justify-between sm:justify-start gap-2">
             <button
               onClick={togglePlay}
-              className="px-4 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md text-xs whitespace-nowrap"
+              className="px-3.5 sm:px-4 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl flex items-center gap-1.5 cursor-pointer shadow-md text-xs whitespace-nowrap"
             >
               {isPlaying ? <Pause size={14} /> : <Play size={14} />} {isPlaying ? "Pause" : "Play Voicemail"}
             </button>
@@ -136,10 +136,27 @@ export default function AudioLab({ config }) {
             >
               <RotateCcw size={13} />
             </button>
+
+            {/* Speeds on small screens */}
+            <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10 sm:hidden">
+              {[0.5, 1.0, 1.5].map((rate) => (
+                <button
+                  key={rate}
+                  onClick={() => handleRateChange(rate)}
+                  className={`px-1.5 py-0.5 rounded text-[9px] font-bold cursor-pointer transition-all ${
+                    playbackRate === rate
+                      ? "bg-white text-black shadow"
+                      : "text-slate-400 hover:text-white"
+                  }`}
+                >
+                  {rate}x
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Timeline Scrubber */}
-          <div className="flex-1 min-w-[200px] flex items-center gap-2">
+          <div className="flex-1 w-full flex items-center gap-2">
             <input
               type="range"
               min="0"
@@ -154,8 +171,8 @@ export default function AudioLab({ config }) {
             </span>
           </div>
 
-          {/* Playback Speeds */}
-          <div className="flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
+          {/* Speeds on desktop */}
+          <div className="hidden sm:flex items-center gap-1 bg-white/5 p-1 rounded-xl border border-white/10">
             {[0.25, 0.5, 1.0, 1.5, 2.0].map((rate) => (
               <button
                 key={rate}
@@ -172,13 +189,13 @@ export default function AudioLab({ config }) {
           </div>
         </div>
 
-        {/* Row 2: Filter Mode Pills & Frequency Slider (Compact 1-Row Grid) */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center pt-2.5 border-t border-white/10">
-          {/* Filter Mode Selector Pills */}
-          <div className="md:col-span-6 flex items-center gap-1.5">
+        {/* Row 2: Filter Mode Pills & Frequency Slider */}
+        <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center pt-2.5 border-t border-white/10">
+          {/* Filter Mode Selector Grid */}
+          <div className="md:col-span-6 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {[
-              { id: "lowpass", label: "Voice Only (Low-Pass)" },
-              { id: "bandpass", label: "Bandpass Isolator" },
+              { id: "lowpass", label: "Low-Pass (Voice)" },
+              { id: "bandpass", label: "Bandpass (Morse)" },
               { id: "highpass", label: "High-Pass" },
               { id: "bypass", label: "Bypass" }
             ].map((f) => (
@@ -188,7 +205,7 @@ export default function AudioLab({ config }) {
                   initAudioContext();
                   setFilterType(f.id);
                 }}
-                className={`flex-1 py-1.5 px-2 rounded-lg border text-[10px] font-bold transition-all cursor-pointer text-center whitespace-nowrap ${
+                className={`py-1.5 px-2 rounded-lg border text-[10px] font-bold transition-all cursor-pointer text-center whitespace-nowrap ${
                   filterType === f.id
                     ? "bg-white text-black border-white shadow"
                     : "bg-black text-slate-400 border-white/10 hover:border-white/30"
@@ -200,9 +217,9 @@ export default function AudioLab({ config }) {
           </div>
 
           {/* Frequency Tuning Slider */}
-          <div className="md:col-span-6 flex items-center gap-3">
+          <div className="md:col-span-6 flex items-center gap-2.5">
             <span className="text-[10px] text-slate-400 whitespace-nowrap font-bold">
-              Frequency: <span className="text-white">{frequency} Hz</span>
+              Freq: <span className="text-white">{frequency} Hz</span>
             </span>
             <input
               type="range"

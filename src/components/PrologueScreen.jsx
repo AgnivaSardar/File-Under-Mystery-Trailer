@@ -117,7 +117,7 @@ export default function PrologueScreen() {
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      className="w-full h-full max-h-screen flex items-center justify-center select-none px-4 relative overflow-hidden font-mono"
+      className="w-full h-full max-h-screen flex items-center justify-center select-none px-3 sm:px-4 relative overflow-hidden font-mono"
     >
       {/* Looping Atmospheric Background Video */}
       <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
@@ -133,38 +133,38 @@ export default function PrologueScreen() {
       </div>
 
       {mode === "start" ? (
-        /* INITIAL CLEAN START SCREEN (NO ICONS / NO BOXES) */
-        <div className="w-full max-w-lg p-6 relative z-10 flex flex-col items-center text-center gap-6 animate-rise-up">
+        /* INITIAL START SCREEN (MOBILE & DESKTOP RESPONSIVE) */
+        <div className="w-full max-w-md p-4 sm:p-6 relative z-10 flex flex-col items-center text-center gap-5 sm:gap-6 animate-rise-up">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-wider text-white">
+            <h1 className="text-xl sm:text-3xl font-extrabold tracking-wider text-white">
               FILE UNDER MYSTERY
             </h1>
-            <p className="text-xs text-slate-400 font-mono tracking-widest uppercase mt-1">
+            <p className="text-[10px] sm:text-xs text-slate-400 font-mono tracking-widest uppercase mt-1">
               {TRAILER_CONFIG.mainEvent.clubName} // Forensic Terminal
             </p>
           </div>
 
-          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-xs text-slate-300 font-mono max-w-md leading-relaxed">
+          <div className="bg-white/5 border border-white/10 rounded-2xl p-4 text-[11px] sm:text-xs text-slate-300 font-mono max-w-md leading-relaxed">
             A classified signal has breached the campus network. Reconstruct the opening evidence and unlock the Blackbox protocol.
           </div>
 
           <button
             onClick={handleStart}
-            className="w-full py-4 bg-white hover:bg-slate-200 text-black font-extrabold text-sm uppercase tracking-wider rounded-2xl transition-all shadow-[0_0_35px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2.5 cursor-pointer group"
+            className="w-full py-3.5 sm:py-4 bg-white hover:bg-slate-200 text-black font-extrabold text-xs sm:text-sm uppercase tracking-wider rounded-2xl transition-all shadow-[0_0_35px_rgba(255,255,255,0.3)] flex items-center justify-center gap-2 cursor-pointer group"
           >
-            <Shield size={18} />
+            <Shield size={16} />
             <span>START INVESTIGATION</span>
-            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            <ArrowRight size={15} className="group-hover:translate-x-1 transition-transform" />
           </button>
         </div>
       ) : (
-        /* FULLSCREEN CINEMATIC PROLOGUE READER (NO ICONS / NO BOXES) */
-        <div className="w-full max-w-6xl h-full max-h-screen flex flex-col justify-between py-6 px-6 animate-rise-up relative z-10 box-border">
+        /* CINEMATIC PROLOGUE READER (MOBILE & DESKTOP RESPONSIVE) */
+        <div className="w-full max-w-6xl h-full max-h-screen flex flex-col justify-between py-4 sm:py-6 px-3 sm:px-6 animate-rise-up relative z-10 box-border">
           {/* Top Header & Audio Toggle */}
-          <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
+          <div className="flex items-center justify-between border-b border-white/10 pb-2.5 sm:pb-3 shrink-0">
             <div>
-              <h2 className="text-sm sm:text-base font-bold tracking-wider text-white">FILE UNDER MYSTERY</h2>
-              <p className="text-[10px] text-slate-400 font-mono tracking-widest uppercase">
+              <h2 className="text-xs sm:text-base font-bold tracking-wider text-white">FILE UNDER MYSTERY</h2>
+              <p className="text-[9px] sm:text-[10px] text-slate-400 font-mono tracking-widest uppercase">
                 {TRAILER_CONFIG.mainEvent.clubName} // Prologue
               </p>
             </div>
@@ -174,15 +174,15 @@ export default function PrologueScreen() {
                 if (voiceEnabled && audioRef.current) audioRef.current.pause();
                 setVoiceEnabled(!voiceEnabled);
               }}
-              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-2 text-xs font-mono cursor-pointer backdrop-blur"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer backdrop-blur"
             >
-              {voiceEnabled ? <Volume2 size={16} className="text-white" /> : <VolumeX size={16} className="text-slate-500" />}
+              {voiceEnabled ? <Volume2 size={15} className="text-white" /> : <VolumeX size={15} className="text-slate-500" />}
               <span className="hidden sm:inline">{voiceEnabled ? "Voice: ON" : "Voice: OFF"}</span>
             </button>
           </div>
 
-          {/* LARGE CINEMATIC STORY TEXT VIEWPORT */}
-          <div className="flex-1 relative flex items-center justify-center overflow-hidden my-auto w-full">
+          {/* CINEMATIC SUBTITLES VIEWPORT */}
+          <div className="flex-1 relative flex items-center justify-center overflow-hidden my-auto w-full px-2">
             <div className="w-full flex flex-col items-center justify-center relative">
               {storyLines.map((line, idx) => {
                 const isCurrent = idx === activeLineIdx;
@@ -193,20 +193,20 @@ export default function PrologueScreen() {
                 return (
                   <div
                     key={idx}
-                    className="text-center font-mono transition-all duration-500 ease-out absolute w-full px-6 max-w-5xl"
+                    className="text-center font-mono transition-all duration-500 ease-out absolute w-full px-2 sm:px-6 max-w-5xl"
                     style={{
                       transform: isCurrent
                         ? "translateY(0px) scale(1)"
                         : isNext
-                        ? "translateY(85px) scale(0.94)"
-                        : "translateY(-85px) scale(0.92)",
+                        ? "translateY(65px) scale(0.92)"
+                        : "translateY(-65px) scale(0.92)",
                       opacity: isCurrent ? 1 : isNext ? 0.35 : 0,
-                      filter: isCurrent ? "blur(0px)" : isNext ? "blur(5px)" : "blur(10px)",
+                      filter: isCurrent ? "blur(0px)" : isNext ? "blur(4px)" : "blur(8px)",
                       color: isCurrent ? "#FFFFFF" : isNext ? "#94A3B8" : "#475569",
                       fontWeight: isCurrent ? 700 : 400,
-                      fontSize: isCurrent ? "28px" : "20px",
-                      lineHeight: "1.5",
-                      textShadow: isCurrent ? "0 0 30px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.9)" : "none",
+                      fontSize: isCurrent ? "clamp(16px, 4vw, 28px)" : "clamp(13px, 3vw, 20px)",
+                      lineHeight: "1.45",
+                      textShadow: isCurrent ? "0 0 25px rgba(0,0,0,0.9), 0 2px 10px rgba(0,0,0,0.9)" : "none",
                       pointerEvents: "none"
                     }}
                   >
@@ -218,44 +218,45 @@ export default function PrologueScreen() {
           </div>
 
           {/* BOTTOM CONTROLS */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-4 font-mono text-xs shrink-0">
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-2 border-t border-white/10 pt-3 font-mono text-xs shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-3">
               <button
                 onClick={handlePrevLine}
                 disabled={activeLineIdx === 0}
-                className="p-2.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 disabled:opacity-30 disabled:pointer-events-none text-white transition-all cursor-pointer backdrop-blur"
+                className="p-2 sm:p-2.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 disabled:opacity-30 disabled:pointer-events-none text-white transition-all cursor-pointer backdrop-blur"
                 title="Previous Line"
               >
-                <ChevronLeft size={18} />
+                <ChevronLeft size={16} />
               </button>
 
               <button
                 onClick={togglePlay}
-                className="px-5 py-2.5 rounded-xl bg-white text-black font-bold flex items-center gap-2 hover:bg-slate-200 transition-all cursor-pointer shadow-xl"
+                className="px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl bg-white text-black font-bold flex items-center gap-1.5 hover:bg-slate-200 transition-all cursor-pointer shadow-xl text-xs"
               >
-                {isPlaying ? <Pause size={15} /> : <Play size={15} />}
+                {isPlaying ? <Pause size={14} /> : <Play size={14} />}
                 <span>{isPlaying ? "Pause" : "Play"}</span>
               </button>
 
               <button
                 onClick={handleNextLine}
-                className="p-2.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-white transition-all cursor-pointer backdrop-blur"
+                className="p-2 sm:p-2.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-white transition-all cursor-pointer backdrop-blur"
                 title="Next Line"
               >
-                <ChevronRight size={18} />
+                <ChevronRight size={16} />
               </button>
 
-              <span className="text-slate-400 text-[11px] ml-2 bg-black/40 px-2.5 py-1 rounded-lg border border-white/5">
-                Line {activeLineIdx + 1} of {storyLines.length}
+              <span className="text-slate-400 text-[10px] sm:text-[11px] ml-1 bg-black/40 px-2 py-1 rounded-lg border border-white/5 whitespace-nowrap">
+                {activeLineIdx + 1} / {storyLines.length}
               </span>
             </div>
 
             <button
               onClick={handleEnterLab}
-              className="w-full sm:w-auto px-6 py-3 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_25px_rgba(255,255,255,0.25)]"
+              className="px-3.5 sm:px-6 py-2 sm:py-2.5 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-[0_0_25px_rgba(255,255,255,0.25)] text-[11px] sm:text-xs whitespace-nowrap"
             >
-              <Shield size={16} />
-              <span>ENTER INVESTIGATION LAB &rarr;</span>
+              <Shield size={14} />
+              <span className="hidden sm:inline">ENTER INVESTIGATION LAB &rarr;</span>
+              <span className="sm:hidden">ENTER LAB &rarr;</span>
             </button>
           </div>
         </div>

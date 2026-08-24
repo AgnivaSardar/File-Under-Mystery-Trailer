@@ -16,7 +16,6 @@ export default function LabEngine() {
   const liveScore = getScore();
 
   // Route Guard / Anti-Bypass:
-  // Revert back to the last unlocked level if trying to jump forward via URL
   useEffect(() => {
     if (levelId === "level2" && !isLevelSolved("level1")) {
       navigate("/investigate/level1", { replace: true });
@@ -147,60 +146,62 @@ export default function LabEngine() {
         <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
       </div>
 
-      {/* TOP STATUS BAR HUD */}
-      <div className="h-12 border-b border-white/10 px-5 flex items-center justify-between text-xs font-mono bg-black/70 backdrop-blur-md relative z-20 shrink-0">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2 px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white font-bold tracking-wider text-xs">
+      {/* TOP STATUS BAR HUD (MOBILE OPTIMIZED) */}
+      <div className="h-12 border-b border-white/10 px-3 sm:px-5 flex items-center justify-between text-xs font-mono bg-black/80 backdrop-blur-md relative z-20 shrink-0">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white font-bold tracking-wider text-[11px] sm:text-xs">
             <Trophy size={13} className="text-white" />
-            <span>SCORE: {liveScore} PTS</span>
+            <span>{liveScore} PTS</span>
           </div>
 
-          <span className="text-slate-500">|</span>
-          <span className="text-slate-400 uppercase tracking-widest text-[11px]">
-            // CASE: {config.id.toUpperCase()}
+          <span className="text-slate-500 hidden sm:inline">|</span>
+          <span className="text-slate-400 uppercase tracking-widest text-[10px] sm:text-[11px]">
+            // {config.id.toUpperCase()}
           </span>
         </div>
 
         {/* Top-Right Quick Actions */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {viewMode === "briefing" ? (
             <button
               onClick={() => {
                 if (voiceEnabled && audioRef.current) audioRef.current.pause();
                 setVoiceEnabled(!voiceEnabled);
               }}
-              className="px-3 py-1.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer backdrop-blur"
+              className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-xs font-mono cursor-pointer backdrop-blur"
+              title="Toggle Voice Narration"
             >
-              {voiceEnabled ? <Volume2 size={15} className="text-white" /> : <VolumeX size={15} className="text-slate-500" />}
+              {voiceEnabled ? <Volume2 size={14} className="text-white" /> : <VolumeX size={14} className="text-slate-500" />}
               <span className="hidden sm:inline">{voiceEnabled ? "Voice: ON" : "Voice: OFF"}</span>
             </button>
           ) : (
             <>
               <button
                 onClick={handleReplayBriefing}
-                className="px-3 py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/20 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur shadow-md text-xs font-bold"
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/20 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur shadow-md text-xs font-bold"
                 title="Re-play pre-level briefing narration"
               >
                 <Radio size={13} className="text-white animate-pulse" />
-                <span>PLAY BRIEFING</span>
+                <span className="hidden md:inline">BRIEFING</span>
               </button>
 
               <button
                 onClick={() => setShowVaultModal(true)}
-                className="px-3 py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/15 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur text-xs"
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/15 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur text-xs"
                 title="Open Case Vault"
               >
                 <Briefcase size={14} />
-                <span>VAULT</span>
+                <span className="hidden sm:inline">VAULT</span>
               </button>
 
               <button
                 onClick={() => setShowHintModal(true)}
-                className="px-3 py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/15 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur text-xs"
+                className="p-1.5 sm:px-3 sm:py-1.5 rounded-xl bg-black/60 hover:bg-white/15 border border-white/15 text-slate-200 hover:text-white flex items-center gap-1.5 transition-all cursor-pointer backdrop-blur text-xs"
                 title="View Hints"
               >
                 <HelpCircle size={14} />
-                <span>HINTS ({(config.hints || []).length})</span>
+                <span className="hidden sm:inline">HINTS ({(config.hints || []).length})</span>
+                <span className="sm:hidden">({(config.hints || []).length})</span>
               </button>
             </>
           )}
@@ -209,10 +210,10 @@ export default function LabEngine() {
 
       {viewMode === "briefing" ? (
         /* 1. CINEMATIC STORY BRIEFING */
-        <div className="w-full h-[calc(100vh-3rem)] flex flex-col justify-between p-4 sm:p-6 relative z-10 overflow-hidden box-border">
+        <div className="w-full h-[calc(100vh-3rem)] flex flex-col justify-between p-3 sm:p-6 relative z-10 overflow-hidden box-border">
           {/* Centered Floating Subtitles */}
-          <div className="flex-1 flex items-center justify-center relative w-full overflow-hidden">
-            <div className="w-full flex flex-col items-center justify-center relative max-w-5xl px-4">
+          <div className="flex-1 flex items-center justify-center relative w-full overflow-hidden px-2">
+            <div className="w-full flex flex-col items-center justify-center relative max-w-5xl">
               {storyLines.map((line, idx) => {
                 const isCurrent = idx === activeLineIdx;
                 const isNext = idx === activeLineIdx + 1;
@@ -222,19 +223,19 @@ export default function LabEngine() {
                 return (
                   <div
                     key={idx}
-                    className="text-center font-mono transition-all duration-500 ease-out absolute w-full px-4"
+                    className="text-center font-mono transition-all duration-500 ease-out absolute w-full px-2 sm:px-4"
                     style={{
                       transform: isCurrent
                         ? "translateY(0px) scale(1)"
                         : isNext
-                        ? "translateY(60px) scale(0.92)"
-                        : "translateY(-60px) scale(0.92)",
+                        ? "translateY(55px) scale(0.92)"
+                        : "translateY(-55px) scale(0.92)",
                       opacity: isCurrent ? 1 : isNext ? 0.35 : 0,
                       filter: isCurrent ? "blur(0px)" : isNext ? "blur(4px)" : "blur(8px)",
                       color: isCurrent ? "#FFFFFF" : isNext ? "#94A3B8" : "#475569",
                       fontWeight: isCurrent ? 700 : 400,
-                      fontSize: isCurrent ? "26px" : "18px",
-                      lineHeight: "1.4",
+                      fontSize: isCurrent ? "clamp(16px, 4vw, 26px)" : "clamp(13px, 3vw, 18px)",
+                      lineHeight: "1.45",
                       textShadow: isCurrent ? "0 0 25px rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.9)" : "none",
                       pointerEvents: "none"
                     }}
@@ -247,8 +248,8 @@ export default function LabEngine() {
           </div>
 
           {/* BOTTOM CONTROLS */}
-          <div className="flex items-center justify-between border-t border-white/10 pt-3 font-mono text-xs px-2 shrink-0">
-            <div className="flex items-center gap-2.5">
+          <div className="flex items-center justify-between border-t border-white/10 pt-3 font-mono text-xs px-1 sm:px-2 shrink-0">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
               <button
                 onClick={() => {
                   if (audioRef.current) audioRef.current.pause();
@@ -291,7 +292,7 @@ export default function LabEngine() {
                 <ChevronRight size={16} />
               </button>
 
-              <span className="text-slate-400 text-xs ml-2 font-mono">
+              <span className="text-slate-400 text-[10px] sm:text-xs ml-1 font-mono whitespace-nowrap">
                 {activeLineIdx + 1} / {storyLines.length}
               </span>
             </div>
@@ -302,15 +303,15 @@ export default function LabEngine() {
                 setIsPlaying(false);
                 setViewMode("workbench");
               }}
-              className="px-5 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer text-xs"
+              className="px-3.5 sm:px-5 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer text-[11px] sm:text-xs whitespace-nowrap"
             >
-              Skip to Workbench &rarr;
+              Skip &rarr;
             </button>
           </div>
         </div>
       ) : (
         /* 2. FORENSIC WORKBENCH */
-        <div className="flex-1 flex flex-col justify-between overflow-y-auto px-6 py-3 animate-fade-in relative z-10 w-full">
+        <div className="flex-1 flex flex-col justify-between overflow-y-auto px-3 sm:px-6 py-2 sm:py-3 animate-fade-in relative z-10 w-full">
           <div className="flex-1 flex items-center justify-center py-1 max-w-6xl mx-auto w-full">
             {config.id === "level1" && <ImageCanvas config={config} />}
             {config.id === "level2" && <AudioLab config={config} />}

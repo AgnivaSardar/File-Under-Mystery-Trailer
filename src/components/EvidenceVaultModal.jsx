@@ -1,5 +1,5 @@
 import React from "react";
-import { Briefcase, X, FileText, CheckCircle2, Lock } from "lucide-react";
+import { Briefcase, X, CheckCircle2, Lock } from "lucide-react";
 import { TRAILER_CONFIG } from "../config/trailerConfig.js";
 import { useGameStore } from "../store/useGameStore.js";
 
@@ -7,11 +7,11 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
   const { isLevelSolved } = useGameStore();
 
   return (
-    <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-black border border-white/20 rounded-2xl max-w-2xl w-full p-6 font-mono text-xs shadow-2xl flex flex-col gap-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 text-white font-bold text-sm">
-            <Briefcase size={18} />
+    <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-black border border-white/20 rounded-2xl max-w-2xl w-full p-4 sm:p-6 font-mono text-xs shadow-2xl flex flex-col gap-4 max-h-[85vh] overflow-y-auto">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
+          <div className="flex items-center gap-2 text-white font-bold text-xs sm:text-sm">
+            <Briefcase size={16} />
             <span>CASE EVIDENCE VAULT // ACTIVE DOSSIER</span>
           </div>
           <button
@@ -22,7 +22,7 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 py-1">
           {Object.values(TRAILER_CONFIG.levels).map((lvl, idx) => {
             const solved = isLevelSolved(lvl.id);
             const isCurrent = lvl.id === currentLevelId;
@@ -30,7 +30,7 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
             return (
               <div
                 key={lvl.id}
-                className={`p-4 rounded-xl border flex flex-col gap-2 transition-all ${
+                className={`p-3.5 rounded-xl border flex flex-col gap-2 transition-all ${
                   solved
                     ? "bg-white/10 border-white/30 text-white"
                     : isCurrent
@@ -51,7 +51,7 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
                   )}
                 </div>
 
-                <div className="font-bold text-slate-200">{lvl.title}</div>
+                <div className="font-bold text-slate-200 text-[11px] sm:text-xs">{lvl.title}</div>
                 <div className="text-[10px] text-slate-400 font-mono">Format: {lvl.evidenceType.toUpperCase()}</div>
 
                 {solved && (
@@ -64,7 +64,7 @@ export default function EvidenceVaultModal({ onClose, currentLevelId }) {
           })}
         </div>
 
-        <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-[11px] text-slate-400 leading-relaxed">
+        <div className="p-3 bg-white/5 rounded-xl border border-white/10 text-[10px] sm:text-[11px] text-slate-400 leading-relaxed">
           The main event contains 12 complete forensic evidence items spanning steganography, cellular automata, Fourier transforms, and network packet dumps.
         </div>
       </div>

@@ -6,12 +6,12 @@ export default function HintModal({ config, onClose }) {
   const { isHintRevealed, revealHint } = useGameStore();
 
   return (
-    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-50 flex items-center justify-center p-4">
-      <div className="bg-black border border-white/20 rounded-2xl max-w-lg w-full p-6 font-mono text-xs shadow-2xl flex flex-col gap-4">
-        <div className="flex items-center justify-between border-b border-white/10 pb-3">
-          <div className="flex items-center gap-2 text-white font-bold text-sm">
-            <HelpCircle size={18} />
-            <span>CASE HINTS // {config.title.toUpperCase()}</span>
+    <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+      <div className="bg-black border border-white/20 rounded-2xl max-w-lg w-full p-4 sm:p-6 font-mono text-xs shadow-2xl flex flex-col gap-4 max-h-[85vh]">
+        <div className="flex items-center justify-between border-b border-white/10 pb-3 shrink-0">
+          <div className="flex items-center gap-2 text-white font-bold text-xs sm:text-sm">
+            <HelpCircle size={16} />
+            <span className="truncate">HINTS // {config.title.toUpperCase()}</span>
           </div>
           <button
             onClick={onClose}
@@ -21,7 +21,7 @@ export default function HintModal({ config, onClose }) {
           </button>
         </div>
 
-        <div className="flex flex-col gap-3 py-2 max-h-[60vh] overflow-y-auto">
+        <div className="flex flex-col gap-3 py-1 overflow-y-auto pr-1">
           {(config.hints || []).map((h, i) => {
             const revealed = isHintRevealed(config.id, i);
             return (
@@ -34,7 +34,7 @@ export default function HintModal({ config, onClose }) {
                   {!revealed && (
                     <button
                       onClick={() => revealHint(config.id, i, h.cost || 3)}
-                      className="px-3 py-1 bg-white text-black font-bold rounded-lg hover:bg-slate-200 cursor-pointer transition-all"
+                      className="px-2.5 py-1 bg-white text-black font-bold rounded-lg hover:bg-slate-200 cursor-pointer transition-all text-[11px]"
                     >
                       Unlock (-{h.cost || 3} pts)
                     </button>
