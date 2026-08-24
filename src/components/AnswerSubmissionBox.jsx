@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Terminal, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { Terminal, CheckCircle2, AlertCircle, ArrowRight, FastForward } from "lucide-react";
 import { useGameStore } from "../store/useGameStore.js";
 
 export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
@@ -32,6 +32,11 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
         }, 2500);
       }
     }, 400);
+  };
+
+  const handleSkip = () => {
+    markLevelSolved(levelConfig.id, 0);
+    onSolveSuccess();
   };
 
   return (
@@ -67,26 +72,41 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
           </button>
         </div>
       ) : (
-        <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
-          <div className="relative flex-1">
-            <input
-              type="text"
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              placeholder="ENTER 5-CHARACTER DECRYPTED CODE..."
-              disabled={status === "checking"}
-              className="w-full bg-black border border-white/20 focus:border-white rounded-xl px-4 py-2.5 text-white placeholder:text-slate-600 focus:outline-none uppercase font-mono transition-all text-xs"
-            />
-          </div>
+        <div className="flex flex-col gap-2.5">
+          <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={inputVal}
+                onChange={(e) => setInputVal(e.target.value)}
+                placeholder="ENTER 5-CHARACTER DECRYPTED CODE..."
+                disabled={status === "checking"}
+                className="w-full bg-black border border-white/20 focus:border-white rounded-xl px-4 py-2.5 text-white placeholder:text-slate-600 focus:outline-none uppercase font-mono transition-all text-xs"
+              />
+            </div>
 
-          <button
-            type="submit"
-            disabled={status === "checking" || !inputVal.trim()}
-            className="w-full sm:w-auto px-6 py-2.5 bg-white hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs whitespace-nowrap"
-          >
-            <span>{status === "checking" ? "VERIFYING..." : "SUBMIT FLAG"}</span>
-          </button>
-        </form>
+            <button
+              type="submit"
+              disabled={status === "checking" || !inputVal.trim()}
+              className="w-full sm:w-auto px-6 py-2.5 bg-white hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs whitespace-nowrap"
+            >
+              <span>{status === "checking" ? "VERIFYING..." : "SUBMIT FLAG"}</span>
+            </button>
+          </form>
+
+          {/* Under Submit: Skip Level Button */}
+          <div className="flex items-center justify-between pt-2 border-t border-white/10">
+            <span className="text-[10px] text-slate-500 font-mono">Want to test the next anomaly?</span>
+            <button
+              type="button"
+              onClick={handleSkip}
+              className="px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/15 border border-white/15 text-slate-300 hover:text-white transition-all flex items-center gap-1.5 text-[11px] font-mono cursor-pointer"
+            >
+              <FastForward size={12} className="text-cyan-400" />
+              <span>Skip Level &rarr;</span>
+            </button>
+          </div>
+        </div>
       )}
 
       {status === "wrong" && (
