@@ -22,16 +22,6 @@ export default function PrologueScreen() {
   const handleStart = () => {
     // Reset puzzle progress so answers are not prefilled or automatically marked solved
     resetProgress();
-
-    // Request browser fullscreen mode
-    try {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else if (document.documentElement.webkitRequestFullscreen) {
-        document.documentElement.webkitRequestFullscreen().catch(() => {});
-      }
-    } catch (e) {}
-
     setMode("cinema");
     setActiveLineIdx(0);
     setIsPlaying(true);
@@ -117,10 +107,10 @@ export default function PrologueScreen() {
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      className="w-full h-full max-h-screen flex items-center justify-center select-none px-3 sm:px-4 relative overflow-hidden font-mono"
+      className="w-full min-h-full flex items-center justify-center select-none px-3 sm:px-4 relative font-mono py-6"
     >
       {/* Looping Atmospheric Background Video */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
+      <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden">
         <video
           src="/script_bg/prologue.mp4"
           autoPlay
@@ -133,7 +123,7 @@ export default function PrologueScreen() {
       </div>
 
       {mode === "start" ? (
-        /* INITIAL START SCREEN (MOBILE & DESKTOP RESPONSIVE) */
+        /* INITIAL START SCREEN */
         <div className="w-full max-w-md p-4 sm:p-6 relative z-10 flex flex-col items-center text-center gap-5 sm:gap-6 animate-rise-up">
           <div>
             <h1 className="text-xl sm:text-3xl font-extrabold tracking-wider text-white">
@@ -158,8 +148,8 @@ export default function PrologueScreen() {
           </button>
         </div>
       ) : (
-        /* CINEMATIC PROLOGUE READER (MOBILE & DESKTOP RESPONSIVE) */
-        <div className="w-full max-w-6xl h-full max-h-screen flex flex-col justify-between py-4 sm:py-6 px-3 sm:px-6 animate-rise-up relative z-10 box-border">
+        /* CINEMATIC PROLOGUE READER */
+        <div className="w-full max-w-6xl min-h-[calc(100vh-3rem)] flex flex-col justify-between py-4 sm:py-6 px-3 sm:px-6 animate-rise-up relative z-10 box-border">
           {/* Top Header & Audio Toggle */}
           <div className="flex items-center justify-between border-b border-white/10 pb-2.5 sm:pb-3 shrink-0">
             <div>
@@ -182,7 +172,7 @@ export default function PrologueScreen() {
           </div>
 
           {/* CINEMATIC SUBTITLES VIEWPORT */}
-          <div className="flex-1 relative flex items-center justify-center overflow-hidden my-auto w-full px-2">
+          <div className="flex-1 relative flex items-center justify-center overflow-hidden my-auto w-full px-2 py-10 min-h-[220px]">
             <div className="w-full flex flex-col items-center justify-center relative">
               {storyLines.map((line, idx) => {
                 const isCurrent = idx === activeLineIdx;
@@ -219,7 +209,7 @@ export default function PrologueScreen() {
 
           {/* BOTTOM CONTROLS */}
           <div className="flex items-center justify-between gap-2 border-t border-white/10 pt-3 font-mono text-xs shrink-0">
-            <div className="flex items-center gap-1.5 sm:gap-3">
+            <div className="flex items-center gap-1.5 sm:gap-2.5">
               <button
                 onClick={handlePrevLine}
                 disabled={activeLineIdx === 0}

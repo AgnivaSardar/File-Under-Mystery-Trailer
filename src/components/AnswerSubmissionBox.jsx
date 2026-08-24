@@ -35,14 +35,14 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
   };
 
   return (
-    <div className="w-full bg-black border border-white/20 rounded-2xl p-4 font-mono text-xs shadow-2xl backdrop-blur-md">
+    <div className="w-full bg-black border border-white/20 rounded-2xl p-3.5 sm:p-4 font-mono text-xs shadow-2xl backdrop-blur-md">
       <div className="flex items-center justify-between mb-2.5 pb-2 border-b border-white/10">
         <div className="flex items-center gap-2 text-slate-300 font-bold">
           <Terminal size={14} className="text-white" />
-          <span className="tracking-wider">ANOMALY VERIFICATION TERMINAL</span>
+          <span className="tracking-wider text-[11px] sm:text-xs">ANOMALY VERIFICATION TERMINAL</span>
         </div>
         {isSolved && (
-          <span className="flex items-center gap-1 text-emerald-400 font-bold text-[11px]">
+          <span className="flex items-center gap-1 text-emerald-400 font-bold text-[10px] sm:text-[11px]">
             <CheckCircle2 size={13} />
             STATUS: RESOLVED (+10 PTS)
           </span>
@@ -51,16 +51,16 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
 
       {isSolved ? (
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 p-3 bg-white/5 border border-white/20 rounded-xl">
-          <div className="flex items-center gap-2 text-white">
+          <div className="flex items-center gap-2 text-white w-full sm:w-auto">
             <CheckCircle2 size={18} className="text-emerald-400 shrink-0" />
             <div>
               <div className="font-bold text-xs">FLAG VERIFIED: <code className="text-emerald-300 font-mono">{levelConfig.correctAnswer}</code></div>
-              <div className="text-[11px] text-slate-400 italic font-mono mt-0.5">"{levelConfig.notebookFragment}"</div>
+              <div className="text-[10px] sm:text-[11px] text-slate-400 italic font-mono mt-0.5">"{levelConfig.notebookFragment}"</div>
             </div>
           </div>
           <button
             onClick={onSolveSuccess}
-            className="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0"
+            className="w-full sm:w-auto px-5 py-2.5 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[0_0_20px_rgba(255,255,255,0.2)] shrink-0 text-xs"
           >
             <span>{levelConfig.id === "level2" ? "Access Uplink Intercept" : "Proceed to Level 02"}</span>
             <ArrowRight size={14} />
@@ -73,16 +73,16 @@ export default function AnswerSubmissionBox({ levelConfig, onSolveSuccess }) {
               type="text"
               value={inputVal}
               onChange={(e) => setInputVal(e.target.value)}
-              placeholder="ENTER DECRYPTED FLAG (e.g. A19X7)..."
+              placeholder="ENTER 5-CHARACTER DECRYPTED CODE..."
               disabled={status === "checking"}
-              className="w-full bg-black border border-white/20 focus:border-white rounded-xl px-4 py-2.5 text-white placeholder:text-slate-600 focus:outline-none uppercase font-mono transition-all"
+              className="w-full bg-black border border-white/20 focus:border-white rounded-xl px-4 py-2.5 text-white placeholder:text-slate-600 focus:outline-none uppercase font-mono transition-all text-xs"
             />
           </div>
 
           <button
             type="submit"
             disabled={status === "checking" || !inputVal.trim()}
-            className="px-6 py-2.5 bg-white hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md"
+            className="w-full sm:w-auto px-6 py-2.5 bg-white hover:bg-slate-200 disabled:opacity-30 disabled:pointer-events-none text-black font-bold rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer shadow-md text-xs whitespace-nowrap"
           >
             <span>{status === "checking" ? "VERIFYING..." : "SUBMIT FLAG"}</span>
           </button>

@@ -130,7 +130,7 @@ export default function LabEngine() {
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      className="fixed inset-0 h-screen w-screen bg-black text-white flex flex-col font-mono select-none overflow-hidden"
+      className="w-full min-h-full flex flex-col font-mono select-none text-white relative"
     >
       {/* Background Video Layer */}
       <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
@@ -146,8 +146,8 @@ export default function LabEngine() {
         <div className="absolute inset-0 bg-black/50 backdrop-blur-[1px]" />
       </div>
 
-      {/* TOP STATUS BAR HUD (MOBILE OPTIMIZED) */}
-      <div className="h-12 border-b border-white/10 px-3 sm:px-5 flex items-center justify-between text-xs font-mono bg-black/80 backdrop-blur-md relative z-20 shrink-0">
+      {/* TOP STATUS BAR HUD (STICKY AT TOP) */}
+      <div className="sticky top-0 z-30 h-12 border-b border-white/10 px-3 sm:px-5 flex items-center justify-between text-xs font-mono bg-black/85 backdrop-blur-md shrink-0">
         <div className="flex items-center gap-2 sm:gap-3">
           <div className="flex items-center gap-1.5 px-2.5 sm:px-3 py-1 rounded-xl bg-white/10 border border-white/20 text-white font-bold tracking-wider text-[11px] sm:text-xs">
             <Trophy size={13} className="text-white" />
@@ -210,9 +210,9 @@ export default function LabEngine() {
 
       {viewMode === "briefing" ? (
         /* 1. CINEMATIC STORY BRIEFING */
-        <div className="w-full h-[calc(100vh-3rem)] flex flex-col justify-between p-3 sm:p-6 relative z-10 overflow-hidden box-border">
+        <div className="w-full min-h-[calc(100vh-3rem)] flex flex-col justify-between p-3 sm:p-6 relative z-10 box-border">
           {/* Centered Floating Subtitles */}
-          <div className="flex-1 flex items-center justify-center relative w-full overflow-hidden px-2">
+          <div className="flex-1 flex items-center justify-center relative w-full px-2 py-8 min-h-[220px]">
             <div className="w-full flex flex-col items-center justify-center relative max-w-5xl">
               {storyLines.map((line, idx) => {
                 const isCurrent = idx === activeLineIdx;
@@ -310,15 +310,15 @@ export default function LabEngine() {
           </div>
         </div>
       ) : (
-        /* 2. FORENSIC WORKBENCH */
-        <div className="flex-1 flex flex-col justify-between overflow-y-auto px-3 sm:px-6 py-2 sm:py-3 animate-fade-in relative z-10 w-full">
-          <div className="flex-1 flex items-center justify-center py-1 max-w-6xl mx-auto w-full">
+        /* 2. FORENSIC WORKBENCH (FULL SCROLLABLE WITH PB-28) */
+        <div className="w-full flex-1 flex flex-col justify-start px-3 sm:px-6 py-4 pb-28 gap-4 animate-fade-in relative z-10 max-w-5xl mx-auto">
+          <div className="w-full flex items-center justify-center">
             {config.id === "level1" && <ImageCanvas config={config} />}
             {config.id === "level2" && <AudioLab config={config} />}
           </div>
 
           {/* VERIFICATION TERMINAL DOCK */}
-          <div className="max-w-4xl mx-auto w-full pt-1">
+          <div className="w-full pt-1">
             <AnswerSubmissionBox
               levelConfig={config}
               onSolveSuccess={handleNextLevel}
