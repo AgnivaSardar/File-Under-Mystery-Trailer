@@ -130,7 +130,7 @@ export default function LabEngine() {
   return (
     <div
       onContextMenu={(e) => e.preventDefault()}
-      className="w-full min-h-full flex flex-col font-mono select-none text-white relative"
+      className="w-full min-h-full flex flex-col font-mono select-none text-white relative overflow-x-hidden"
     >
       {/* Background Video Layer */}
       <div className="fixed inset-0 w-full h-full z-0 overflow-hidden pointer-events-none">
@@ -210,10 +210,10 @@ export default function LabEngine() {
 
       {viewMode === "briefing" ? (
         /* 1. CINEMATIC STORY BRIEFING */
-        <div className="w-full min-h-[calc(100vh-3rem)] flex flex-col justify-between p-3 sm:p-6 relative z-10 box-border">
+        <div className="w-full max-w-5xl mx-auto min-h-[calc(100vh-3rem)] flex flex-col justify-between p-4 sm:p-6 relative z-10 box-border">
           {/* Centered Floating Subtitles */}
           <div className="flex-1 flex items-center justify-center relative w-full px-2 py-8 min-h-[220px]">
-            <div className="w-full flex flex-col items-center justify-center relative max-w-5xl">
+            <div className="w-full flex flex-col items-center justify-center relative max-w-4xl">
               {storyLines.map((line, idx) => {
                 const isCurrent = idx === activeLineIdx;
                 const isNext = idx === activeLineIdx + 1;
@@ -248,7 +248,7 @@ export default function LabEngine() {
           </div>
 
           {/* BOTTOM CONTROLS */}
-          <div className="flex items-center justify-between border-t border-white/10 pt-3 font-mono text-xs px-1 sm:px-2 shrink-0">
+          <div className="w-full flex items-center justify-between gap-2 border-t border-white/10 pt-3 pb-4 font-mono text-xs shrink-0">
             <div className="flex items-center gap-1.5 sm:gap-2.5">
               <button
                 onClick={() => {
@@ -256,7 +256,7 @@ export default function LabEngine() {
                   setActiveLineIdx((prev) => Math.max(0, prev - 1));
                 }}
                 disabled={activeLineIdx === 0}
-                className="p-2 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 disabled:opacity-30 text-white transition-all cursor-pointer backdrop-blur"
+                className="p-2 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 disabled:opacity-30 text-white transition-all cursor-pointer backdrop-blur shrink-0"
               >
                 <ChevronLeft size={16} />
               </button>
@@ -272,7 +272,7 @@ export default function LabEngine() {
                     else playStudioBriefingAudio(config.id, activeLineIdx);
                   }
                 }}
-                className="p-2 rounded-xl bg-white text-black font-bold hover:bg-slate-200 transition-all cursor-pointer"
+                className="p-2 rounded-xl bg-white text-black font-bold hover:bg-slate-200 transition-all cursor-pointer shrink-0"
               >
                 {isPlaying ? <Pause size={16} /> : <Play size={16} />}
               </button>
@@ -287,13 +287,13 @@ export default function LabEngine() {
                     setViewMode("workbench");
                   }
                 }}
-                className="p-2 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-white transition-all cursor-pointer backdrop-blur"
+                className="p-2 rounded-xl bg-black/60 border border-white/10 hover:bg-white/15 text-white transition-all cursor-pointer backdrop-blur shrink-0"
               >
                 <ChevronRight size={16} />
               </button>
 
               <span className="text-slate-400 text-[10px] sm:text-xs ml-1 font-mono whitespace-nowrap">
-                {activeLineIdx + 1} / {storyLines.length}
+                {activeLineIdx + 1}/{storyLines.length}
               </span>
             </div>
 
@@ -303,14 +303,14 @@ export default function LabEngine() {
                 setIsPlaying(false);
                 setViewMode("workbench");
               }}
-              className="px-3.5 sm:px-5 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer text-[11px] sm:text-xs whitespace-nowrap"
+              className="px-3.5 sm:px-5 py-2 bg-white hover:bg-slate-200 text-black font-bold rounded-xl transition-all shadow-[0_0_20px_rgba(255,255,255,0.2)] cursor-pointer text-xs whitespace-nowrap shrink-0"
             >
               Skip &rarr;
             </button>
           </div>
         </div>
       ) : (
-        /* 2. FORENSIC WORKBENCH (FULL SCROLLABLE WITH PB-28) */
+        /* 2. FORENSIC WORKBENCH */
         <div className="w-full flex-1 flex flex-col justify-start px-3 sm:px-6 py-4 pb-28 gap-4 animate-fade-in relative z-10 max-w-5xl mx-auto">
           <div className="w-full flex items-center justify-center">
             {config.id === "level1" && <ImageCanvas config={config} />}
