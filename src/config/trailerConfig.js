@@ -28,7 +28,7 @@ export const TRAILER_CONFIG = {
 
   // 2. CINEMATIC PROLOGUE LINES (100% Matched With Female Studio Voice)
   prologueLines: [
-    "October 14, 2026. Department of Mathematics.",
+    "August 25, 2026. Department of Mathematics.",
     "Dr. Elias Marrow vanished thirty-seven days ago, leaving behind a locked air-gapped terminal.",
     "Before the campus network severed, two anomalous signal traces surfaced.",
     "A proof is not given; it is earned. Enter the frequency space to uncover what lies in the noise."
