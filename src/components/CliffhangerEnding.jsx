@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { 
   Radio, 
   ExternalLink, 
@@ -14,9 +14,22 @@ import {
   AlertTriangle
 } from "lucide-react";
 import { TRAILER_CONFIG } from "../config/trailerConfig.js";
+import { useGameStore } from "../store/useGameStore.js";
 
 export default function CliffhangerEnding() {
+  const navigate = useNavigate();
+  const { isLevelSolved } = useGameStore();
   const [copied, setCopied] = useState(false);
+
+  // Route Guard / Anti-Bypass:
+  // Revert back to the last unlocked level if trying to jump forward via URL
+  useEffect(() => {
+    if (!isLevelSolved("level1")) {
+      navigate("/investigate/level1", { replace: true });
+    } else if (!isLevelSolved("level2")) {
+      navigate("/investigate/level2", { replace: true });
+    }
+  }, [isLevelSolved, navigate]);
 
   const config = TRAILER_CONFIG;
   const event = config.mainEvent;

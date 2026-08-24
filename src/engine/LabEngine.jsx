@@ -12,10 +12,23 @@ import { useGameStore } from "../store/useGameStore.js";
 export default function LabEngine() {
   const { levelId } = useParams();
   const navigate = useNavigate();
-  const config = TRAILER_CONFIG.levels[levelId] || TRAILER_CONFIG.levels.level1;
-
-  const { getScore } = useGameStore();
+  const { isLevelSolved, getScore } = useGameStore();
   const liveScore = getScore();
+
+  // Route Guard / Anti-Bypass:
+  // Revert back to the last unlocked level if trying to jump forward via URL
+  useEffect(() => {
+    if (levelId === "level2" && !isLevelSolved("level1")) {
+      navigate("/investigate/level1", { replace: true });
+      return;
+    }
+    if (levelId !== "level1" && levelId !== "level2") {
+      navigate("/investigate/level1", { replace: true });
+      return;
+    }
+  }, [levelId, isLevelSolved, navigate]);
+
+  const config = TRAILER_CONFIG.levels[levelId] || TRAILER_CONFIG.levels.level1;
 
   const [viewMode, setViewMode] = useState("briefing"); // 'briefing' | 'workbench'
   const [showVaultModal, setShowVaultModal] = useState(false);

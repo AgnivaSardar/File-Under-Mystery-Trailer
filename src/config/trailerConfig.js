@@ -11,7 +11,7 @@ export const TRAILER_CONFIG = {
     subtitle: "The Marrow Protocol // 12-Tier Forensic Anomaly Investigation",
     clubName: "Mathematics Club",
     eventDate: "03/09/2026",
-    eventTime: "11:00 AM – 04:00 PM",
+    eventTime: "11:00 AM - 04:00 PM",
     venue: "AB3 - 301",
     teamSize: "1 to 3 Investigators per Team",
     prizePool: "Exciting Cash Prizes & Official Forensics Certification",
@@ -54,8 +54,8 @@ export const TRAILER_CONFIG = {
       correctAnswer: "M47H9",
       hints: [
         { cost: 3, text: "The camera sensor recorded low non-zero pixel intensities clustered in the dark shadows. Adjust the Min and Max luminance sliders to stretch this range." },
-        { cost: 3, text: "Drag the Min cutoff to around ~8-14 and the Max cutoff to ~30-40, then adjust the Gamma curve to ~1.40." },
-        { cost: 5, text: "Pan across the dark shadows, trees, and architectural recesses to locate the five numbered coordinate markers in sequence." }
+        { cost: 3, text: "Drag the Min cutoff to around ~6-10 and Max cutoff to ~18-25, then check the five dark shadow zones across the canopy, wall base, and recesses." },
+        { cost: 5, text: "Assemble the five coordinates (1:M, 2:4, 3:7, 4:H, 5:9) in sequential order: M47H9." }
       ],
       notebookFragment: "First coordinate locked. The anomaly outside AB3 was not a glitch."
     },
@@ -78,8 +78,8 @@ export const TRAILER_CONFIG = {
       correctAnswer: "T34S2",
       hints: [
         { cost: 3, text: "The muffled voice masks an underlying high-frequency telegraph carrier tone vibrating above the vocal range." },
-        { cost: 3, text: "Switch the filter mode to Bandpass Isolator and sweep the center frequency slider toward ~2400 Hz." },
-        { cost: 5, text: "Listen carefully to the high-pitch CW Morse pulse groups: dah, di-di-di-dah-dah, di-di-di-di-dah, di-di-dit, di-di-dah-dah-dah." }
+        { cost: 3, text: "Switch the filter mode to Bandpass Isolator and sweep the center frequency slider toward ~2400 Hz. Listen for the distinct 1.35s gaps between letters." },
+        { cost: 5, text: "Decode the five Morse pulse groups: - (T), ...-- (3), ....- (4), ... (S), ..--- (2) -> T34S2." }
       ],
       notebookFragment: "Second coordinate locked. The carrier frequency leads directly to the Blackbox protocol."
     }
@@ -96,7 +96,7 @@ export const TRAILER_CONFIG = {
       "\"The true master black box contains 12 deep mathematical anomaly tiers... Cellular Automata, Elliptic Curves, 2D Fourier Transforms, and Eulerian Graph Topologies.\"",
       "\"The full investigation convenes on 03/09/2026 in AB3 - 301. Assemble your team and register now.\""
     ],
-    marrowSignature: "— Dr. Elias Marrow // Senior Faculty in Theoretical Mathematics",
+    marrowSignature: "- Dr. Elias Marrow // Senior Faculty in Theoretical Mathematics",
     marketingHighlights: [
       { label: "12 Forensic Anomaly Tiers", desc: "Image steganography, acoustic filtering, cryptographic ciphers, and network packet forensics." },
       { label: "Live Competitive Leaderboard", desc: "Compete against the sharpest analytical minds in real-time with live scoring and hint penalties." },
