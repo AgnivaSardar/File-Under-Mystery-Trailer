@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import ConstellationBackground from "./components/ConstellationBackground.jsx";
+import BackgroundMusic from "./components/BackgroundMusic.jsx";
 import PrologueScreen from "./components/PrologueScreen.jsx";
 import CliffhangerEnding from "./components/CliffhangerEnding.jsx";
 import LabEngine from "./engine/LabEngine.jsx";
@@ -33,6 +34,9 @@ export default function App() {
       >
         {/* Pure Black background with interactive constellation particles */}
         <ConstellationBackground />
+
+        {/* Global Ambient Background Music Player (Controlled Volume & Persistent Toggle) */}
+        <BackgroundMusic />
 
         {/* Main Content Viewport with right-side scrollbar */}
         <main className="flex-1 w-full h-full relative z-10 overflow-y-auto overflow-x-hidden">
