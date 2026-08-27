@@ -6,6 +6,7 @@ export default function AudioLab({ config }) {
   const audioCtxRef = useRef(null);
   const sourceNodeRef = useRef(null);
   const filterNodeRef = useRef(null);
+  const gainNodeRef = useRef(null);
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
@@ -61,11 +62,16 @@ export default function AudioLab({ config }) {
       const filter = ctx.createBiquadFilter();
       filter.type = filterType === "bypass" ? "allpass" : filterType;
       filter.frequency.setValueAtTime(frequency, ctx.currentTime);
-      filter.Q.setValueAtTime(4.0, ctx.currentTime);
+      filter.Q.setValueAtTime(filterType === "bandpass" ? 8.0 : 1.0, ctx.currentTime);
       filterNodeRef.current = filter;
 
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(filterType === "bandpass" ? 2.5 : 1.0, ctx.currentTime);
+      gainNodeRef.current = gain;
+
       source.connect(filter);
-      filter.connect(ctx.destination);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
     }
   };
 
@@ -73,8 +79,16 @@ export default function AudioLab({ config }) {
     if (filterNodeRef.current && audioCtxRef.current) {
       const ctx = audioCtxRef.current;
       const filter = filterNodeRef.current;
+      const gain = gainNodeRef.current;
+      
       filter.type = filterType === "bypass" ? "allpass" : filterType;
       filter.frequency.setTargetAtTime(frequency, ctx.currentTime, 0.02);
+      filter.Q.setTargetAtTime(filterType === "bandpass" ? 9.0 : 1.0, ctx.currentTime, 0.02);
+      
+      if (gain) {
+        // Boost narrow bandpass gain so the faint carrier shines through cleanly only when isolated
+        gain.gain.setTargetAtTime(filterType === "bandpass" ? 3.0 : 1.0, ctx.currentTime, 0.02);
+      }
     }
   }, [filterType, frequency]);
 
@@ -189,13 +203,13 @@ export default function AudioLab({ config }) {
           </div>
         </div>
 
-        {/* Row 2: Filter Mode Pills & Frequency Slider */}
+        {/* Row 2: Filter Mode Pills & Frequency Slider (Clean Neutral Labels) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-2.5 items-center pt-2.5 border-t border-white/10">
           {/* Filter Mode Selector Grid */}
           <div className="md:col-span-6 grid grid-cols-2 sm:grid-cols-4 gap-1.5">
             {[
-              { id: "lowpass", label: "Low-Pass (Voice)" },
-              { id: "bandpass", label: "Bandpass (Morse)" },
+              { id: "lowpass", label: "Low-Pass" },
+              { id: "bandpass", label: "Bandpass" },
               { id: "highpass", label: "High-Pass" },
               { id: "bypass", label: "Bypass" }
             ].map((f) => (
